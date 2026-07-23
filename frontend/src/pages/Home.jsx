@@ -26,7 +26,7 @@ const Home = ({ user, error }) => {
             <Link to='/register' 
             className="w-full text-gray-800 bg-grey-200 p-3
              rounded-md hover:bg-gray-300 font-medium">
-              Register
+              Register Now
             </Link>
           </div>
         </div>
