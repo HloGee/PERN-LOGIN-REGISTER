@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = ({ setUser}) => {
   const [form, setForm] = useState({
@@ -24,9 +25,15 @@ const Login = ({ setUser}) => {
   }
 
   return (
-  <div className="min-h-[80vh] flex items-center justify-center">
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-blue-100">
     <form className="bg-white p-6 rounded shadow-md" onSubmit={handleSubmit}>
-      <h2 className="text-xl mb-4">Login</h2>
+      <h2 className="text-3xl font-bold text-center mb-6">
+  Welcome Back
+</h2>
+
+<p className="text-gray-500 text-center mb-6">
+  Sign in to continue
+</p>
       {error &&  <p className=" text-red-500 mb-4">{error}</p>}
       <input 
         type="email"
@@ -43,6 +50,12 @@ const Login = ({ setUser}) => {
         value={form.password} onChange={(e) => setForm({...
         form, password: e.target.value})} />
         <button className="bg-blue-500 text-white p-2 w-full">Login</button>
+        <p className="text-center mt-5 text-gray-600">
+        Don't have an account?{" "}
+        <Link to="/register" className="text-blue-600 font-semibold hover:underline">
+          Register
+        </Link>
+      </p>
     </form>
   </div>
   );
