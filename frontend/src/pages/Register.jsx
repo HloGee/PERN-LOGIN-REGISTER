@@ -32,7 +32,7 @@ const Register = ({ setUser}) => {
       
       <input 
         type="text"
-         placeholder="name" 
+         placeholder="Name" 
          className="border p-2 w-full mb-3" 
          value={form.name} onChange={(e) => setForm({...
         form, 
@@ -40,7 +40,7 @@ const Register = ({ setUser}) => {
         })} />
       <input 
         type="email"
-         placeholder="email" 
+         placeholder="Email" 
          className="border p-2 w-full mb-3" 
          value={form.email} onChange={(e) => setForm({...
         form, 
@@ -48,7 +48,7 @@ const Register = ({ setUser}) => {
         })} />
         <input 
         type="password" 
-        placeholder="password" 
+        placeholder="Password" 
         className="border p-2 w-full mb-3" 
         value={form.password} onChange={(e) => setForm({...
         form, password: e.target.value})} />

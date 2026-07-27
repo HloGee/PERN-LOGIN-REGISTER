@@ -30,7 +30,7 @@ const Login = ({ setUser}) => {
       {error &&  <p className=" text-red-500 mb-4">{error}</p>}
       <input 
         type="email"
-         placeholder="email" 
+         placeholder="Email" 
          className="border p-2 w-full mb-3" 
          value={form.email} onChange={(e) => setForm({...
         form, 
@@ -38,7 +38,7 @@ const Login = ({ setUser}) => {
         })} />
         <input 
         type="password" 
-        placeholder="password" 
+        placeholder="Password" 
         className="border p-2 w-full mb-3" 
         value={form.password} onChange={(e) => setForm({...
         form, password: e.target.value})} />
