@@ -16,7 +16,7 @@ const Register = ({ setUser}) => {
     e.preventDefault();
     try {
       const res = await axios.post("/api/auth/register", form);
-      setUser(res.data);
+      setUser(res.data.user);
       navigate("/");
     } catch (err) {
        
@@ -34,7 +34,7 @@ const Register = ({ setUser}) => {
         type="text"
          placeholder="name" 
          className="border p-2 w-full mb-3" 
-         value={form.value} onChange={(e) => setForm({...
+         value={form.name} onChange={(e) => setForm({...
         form, 
         name: e.target.value,
         })} />
