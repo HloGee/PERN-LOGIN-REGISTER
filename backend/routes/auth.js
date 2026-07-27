@@ -3,8 +3,11 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
 import {protect} from "../middleware/auth.js";
+import { OAuth2Client } from "google-auth-library";
 
 const router = express.Router();
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const cookieOptions = { 
     httpOnly: true,
@@ -86,6 +89,42 @@ router.post('/login', async (req, res) => {
             email: userData.email,
      },
     });
+});
+
+//Google Oath
+router.post("/google", async (req, res) => {
+    try {
+        const { token } = req.body;
+
+        if (!token) {
+            return res.status(400).json({
+                message: "Google token is required"
+            });
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+
+        res.json({
+            message: "Google token verified!",
+            user: {
+                name: payload.name,
+                email: payload.email,
+                picture: payload.picture,
+            },
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(401).json({
+            message: "Invalid Google token"
+        });
+    }
 });
 
 //Me

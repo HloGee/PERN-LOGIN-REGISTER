@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = ({ setUser}) => {
   const [form, setForm] = useState({
@@ -23,6 +24,20 @@ const Login = ({ setUser}) => {
       setError("Invalid Email or password");
     }
   }
+
+  const handleGoogleLogin = async (credentialResponse) => {
+    try{
+      const res = await axios.post("/api/auth/google", {
+        token: credentialResponse.credential,
+      });
+    
+      setUser(res.data.user);
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setError("Google Sign-In failed");
+    }
+  };
 
   return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-blue-100">
@@ -50,6 +65,12 @@ const Login = ({ setUser}) => {
         value={form.password} onChange={(e) => setForm({...
         form, password: e.target.value})} />
         <button className="bg-blue-500 text-white p-2 w-full">Login</button>
+        <div className="my-4 flex justify-center">
+          <GoogleLogin 
+          onSuccess={handleGoogleLogin}
+          onError={() => setError("Google Sign-In failed")}
+          />
+        </div>
         <p className="text-center mt-5 text-gray-600">
         Don't have an account?{" "}
         <Link to="/register" className="text-blue-600 font-semibold hover:underline">
