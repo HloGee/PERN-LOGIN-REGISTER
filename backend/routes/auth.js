@@ -109,11 +109,42 @@ router.post("/google", async (req, res) => {
 
         const payload = ticket.getPayload();
 
+        const email = payload.email;
+        const name = payload.name;
+
+        const existingUser = await pool.query(
+            "SELECT * FROM users  WHERE email = $1",
+            [email]
+        );
+
+        let user;
+
+        if (existingUser.rows.length === 0) {
+            const randomPassword = Math.random().toString(36);
+
+            const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+            const newUser = await pool.query(
+                `INSERT INTO users (name, email, password)
+                VALUES ($1, $2, $3)
+                RETURNING id, name, email`, 
+                [name, email, hashedPassword]
+            );
+
+            user = newUser.rows[0];
+        } else {
+            user = existingUser.rows[0];
+        }
+
+        const jwtToken = generateToken(user,id);
+        res.cookie("token", jwtToken, cookieOptions);
+
         res.json({
-            message: "Google token verified!",
+            message: "Google login successful",
             user: {
-                name: payload.name,
-                email: payload.email,
+                id: user.id, 
+                name: user.name,
+                email: user.email,
                 picture: payload.picture,
             },
         });
