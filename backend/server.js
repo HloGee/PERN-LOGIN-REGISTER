@@ -12,10 +12,15 @@ console.log("Port:", process.env.DB_PORT);
 
 const app = express();
 
-app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://pern-frontend-194399446108.africa-south1.run.app",
+    ],
     credentials: true,
-}))
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser()); 

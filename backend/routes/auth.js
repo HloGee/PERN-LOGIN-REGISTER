@@ -136,7 +136,7 @@ router.post("/google", async (req, res) => {
             user = existingUser.rows[0];
         }
 
-        const jwtToken = generateToken(user,id);
+        const jwtToken = generateToken(user.id);
         res.cookie("token", jwtToken, cookieOptions);
 
         res.json({

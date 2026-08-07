@@ -4,10 +4,10 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import axios from "axios";
+import api from "./api/axios";
 import NotFound from "./components/NotFound";
 
-axios.defaults.withCredentials = true; 
+
 
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("/api/auth/me");
+        const res = await api.get("/api/auth/me");
         setUser(res.data);
       } catch (err) {
         setUser(null);
