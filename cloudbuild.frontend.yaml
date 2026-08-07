@@ -1,0 +1,32 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-frontend/frontend:latest",
+        "./frontend"
+      ]
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-frontend/frontend:latest"
+      ]
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "run",
+        "deploy",
+        "pern-frontend",
+        "--image",
+        "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-frontend/frontend:latest",
+        "--region",
+        "africa-south1",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated"
+      ]
