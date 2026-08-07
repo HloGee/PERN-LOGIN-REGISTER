@@ -8,7 +8,8 @@ const Register = ({ setUser}) => {
     name: "",
     email: "",
     password: "",
-  })
+    confirmPassword: "",
+  });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
