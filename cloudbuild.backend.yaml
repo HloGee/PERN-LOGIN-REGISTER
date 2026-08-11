@@ -1,5 +1,4 @@
 steps:
-  # 1. Build the backend Docker image
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -9,7 +8,6 @@ steps:
         "./backend"
       ]
 
-  # 2. Push the Docker image to Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -17,7 +15,6 @@ steps:
         "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest"
       ]
 
-  # 3. Deploy the new image to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -35,3 +32,6 @@ steps:
 
 images:
   - "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
