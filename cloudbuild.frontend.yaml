@@ -30,3 +30,6 @@ steps:
         "managed",
         "--allow-unauthenticated"
       ]
+
+images:
+  - "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-frontend/frontend:latest"
