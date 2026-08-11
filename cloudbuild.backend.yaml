@@ -1,27 +1,37 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
+  # 1. Build the backend Docker image
+  - name: "gcr.io/cloud-builders/docker"
     args:
       [
-        'build',
-        '-t',
-        'africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest',
-        './backend'
+        "build",
+        "-t",
+        "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest",
+        "./backend"
       ]
 
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  # 2. Push the Docker image to Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest"
+      ]
+
+  # 3. Deploy the new image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
       [
-        'run',
-        'deploy',
-        'pern-backend',
-        '--image',
-        'africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest',
-        '--region',
-        'africa-south1',
-        '--platform',
-        'managed'
+        "run",
+        "deploy",
+        "pern-backend",
+        "--image",
+        "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest",
+        "--region",
+        "africa-south1",
+        "--platform",
+        "managed"
       ]
 
 images:
-  - 'africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest'
+  - "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-backend/backend:latest"
