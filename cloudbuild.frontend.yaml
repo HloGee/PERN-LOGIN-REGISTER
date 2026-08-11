@@ -33,3 +33,6 @@ steps:
 
 images:
   - "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-frontend/frontend:latest"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
