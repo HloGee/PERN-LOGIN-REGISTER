@@ -17,7 +17,7 @@ const Login = ({ setUser}) => {
     e.preventDefault();
     try {
       const res = await api.post("/api/auth/login", form);
-      setUser(res.data.user);
+      setUser(res.data);
       navigate("/");
     } catch (err) {
        

@@ -5,6 +5,10 @@ steps:
         "build",
         "-t",
         "africa-south1-docker.pkg.dev/$PROJECT_ID/pern-frontend/frontend:latest",
+        "--build-arg",
+        "VITE_API_URL=https://pern-backend-194399446108.africa-south1.run.app",
+        "--build-arg",
+        "VITE_GOOGLE_CLIENT_ID=194399446108-hkg2e1gol6m2u3serk6o3uusmt9fps0l.apps.googleusercontent.com",
         "./frontend"
       ]
 
