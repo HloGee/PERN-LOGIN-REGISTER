@@ -73,7 +73,7 @@ const Register = ({ setUser}) => {
           value={form.confirmPassword}
           onChange={(e) =>
             setForm({
-              ..form,
+              ...form,
               confirmPassword: e.target.value,
             })
             }  />
