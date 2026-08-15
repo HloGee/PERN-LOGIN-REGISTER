@@ -20,7 +20,7 @@ function App() {
     const fetchUser = async () => {
       try {
         const res = await api.get("/api/auth/me");
-        setUser(res.data.user);
+        setUser(res.data);
       } catch (err) {
         setUser(null);
       } finally {
