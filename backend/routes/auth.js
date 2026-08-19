@@ -9,11 +9,13 @@ const router = express.Router();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-const cookieOptions = { 
+const isProduction = process.env.NODE_ENV === "production";
+
+const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    secure: isProduction,
+    sameSite: isProduction ? "None" : "Lax",
+    maxAge: 30 * 24 * 60 * 1000,
 };
 
 const generateToken = (id) => {
