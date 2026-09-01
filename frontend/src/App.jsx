@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import api from "./api/axios";
 import NotFound from "./components/NotFound";
-
+import CookieConsent from "./components/CookieConsent";
 
 
 
@@ -44,6 +44,7 @@ function App() {
           <Route path="/register" element={<Register setUser={setUser} />}/>
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <CookieConsent />
       </Router>
   );
 }

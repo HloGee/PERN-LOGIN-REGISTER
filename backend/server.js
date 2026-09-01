@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://pern-frontend-194399446108.africa-south1.run.app",
+      "https://cool-cranachan-8006bd.netlify.app",
     ],
     credentials: true,
   })
