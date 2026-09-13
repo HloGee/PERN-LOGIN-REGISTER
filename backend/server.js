@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://cool-cranachan-8006bd.netlify.app",
+      "https://sensational-gnome-e4b145.netlify.app",
     ],
     credentials: true,
   })

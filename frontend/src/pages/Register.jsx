@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Mail, User, Lock, Eye, EyeOff} from "lucide-react";
 
 const Register = ({ setUser}) => {
   const [form, setForm] = useState({
@@ -10,7 +11,11 @@ const Register = ({ setUser}) => {
     password: "",
     confirmPassword: "",
   });
+
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+
   const navigate = useNavigate();
 
 
@@ -36,54 +41,176 @@ const Register = ({ setUser}) => {
   };
 
   return (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-blue-100">
-    <form className="bg-white p-6 rounded shadow-md" onSubmit={handleSubmit}>
-      <h2 className="text-3xl font-bold text-center mb-6">
+         <div className="min-h-screen flex items-center justify-center bg-[oklch(96.8% 0.007 247.896)] px-4">
+    <form className="w-full max-w-md rounded-2xl border border-slate-100 bg-white p-6 shadow-xl sm:p-8 lg:p-10"
+    onSubmit={handleSubmit}>
+      <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900">
   Create Account
-</h2>
+      </h2>
+      <p className="mt-2 text-center text-sm text-slate-500">
+        Create your account to get started
+      </p>
 
-      {error &&  <p className=" text-red-500 mb-4">{error}</p>}
+      {error && (
+              <div className="mt-5 mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                <p className="text-sm font-medium text-red-600">
+                  {error}
+                </p>
+              </div>
+      )}
       
-      <input 
+      
+<div>
+        <label
+              htmlFor="name"
+              className="mb-2 block text-sm font-medium text-slate-700"
+              >
+                Full Name 
+        </label>
+  <div className="relative">
+    <User
+    size={18}
+    strokeWidth={2}
+    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+    />
+      <input
+        id="name"
         type="text"
-         placeholder="Name" 
-         className="border p-2 w-full mb-3" 
-         value={form.name} onChange={(e) => setForm({...
-        form, 
-        name: e.target.value,
-        })} />
-      <input 
-        type="email"
-         placeholder="Email" 
-         className="border p-2 w-full mb-3" 
-         value={form.email} onChange={(e) => setForm({...
-        form, 
-        email: e.target.value,
-        })} />
-        <input 
-        type="password" 
-        placeholder="Password" 
-        className="border p-2 w-full mb-3" 
-        value={form.password} onChange={(e) => setForm({...
-        form, password: e.target.value})} />
-        <input 
-          type="password"
-          placeholder="Confirm Password"
-          className="border p-2 w-full mb-3"
-          value={form.confirmPassword}
+        placeholder="Your full Name"
+        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+        value={form.name}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            name: e.target.value,
+          })
+        }
+      />
+  </div>
+</div>      
+
+<div>
+        <label
+        htmlFor="email"
+        className="mb-2 block text-sm font-medium text-slate-700"
+        >
+          Email address
+        </label>
+
+      <div className="relative">
+        <Mail
+        size={18}
+        strokeWidth={2}
+        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+        />
+          <input
+            id="email"
+            type="email"
+            placeholder="Email address"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+            value={form.email}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                email: e.target.value,
+              })
+            }></input>
+
+      </div>
+</div>
+
+<div>
+  <label
+    htmlFor="password"
+    className="mb-2 block text-sm font-medium text-slate-700"
+    >
+      Password
+    </label>
+    <div className="relative">
+      <Lock
+        size={18}
+        strokeWidth={2}
+        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+      />
+        <input
+          id="password"
+          type={showPassword ? "text" : "password"}
+          placeholder="Create a password"
+          className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+          value={form.password}
           onChange={(e) =>
             setForm({
               ...form,
-              confirmPassword: e.target.value,
+              password: e.target.value,
             })
-            }  />
-        <button className="bg-blue-500 text-white p-2 w-full">Register</button>
+          }
+       />
+       <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+          aria-label={showPassword ? "Hide Password" : "Show password"}
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} /> }
+          </button>
+    </div>
+</div>
+
+<div className="mt-5">
+  <label
+    htmlFor="confirmPassword"
+    className="mb-2 block text-sm font-medium text-slate-700"
+    >
+      Confirm password
+    </label>
+
+    <div className="relative">
+      <Lock
+      size={18}
+      strokeWidth={2}
+      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+      />
+      <input
+        id="confirmPassword"
+        type={showConfirmPassword ? "text" : "password"}
+        placeholder="Confirm your password"
+        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+        value={form.confirmPassword}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            confirmPassword: e.target.value,
+          })
+          }
+        />
+        <button
+          type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+            aria-label={
+              showConfirmPassword
+                ? "Hide confirm password"
+                : "Show confirm password"
+            }
+            >
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} /> }
+        </button>
+    </div>
+</div>
+
+          <button 
+              type="submit"
+                className="mt-8 w-full rounded-xl bg-blue-600 py-3.5 font-semibold text-white shadow-lg shadow-blue-600/20 transition-all duration-200 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/25 focus:outline-none focus:ring-4 focus:ring-blue-500/20 active:scale-[0.98]"
+>
+          Register
+          </button>
+
               <p className="text-center mt-5 text-gray-600">
         Already have an account?{" "}
-        <Link to="/login" className="text-blue-600 font-semibold hover:underline">
-          Login
-        </Link>
-      </p>
+            <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+         Login
+            </Link>
+              </p>
     </form>
   </div>
   );
