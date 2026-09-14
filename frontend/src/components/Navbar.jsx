@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from "../api/axios";
-import { Menu, X,User} from 'lucide-react';
+import { Menu, X,User, Mail, LogOut, LogIn, UserPlus, Settings} from 'lucide-react';
 
-const Navbar = ({user, setUser}) => {
+const Navbar = ({user, setUser, openAuthModal}) => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -36,8 +36,10 @@ const Navbar = ({user, setUser}) => {
     <div className="flex items-center justify-between">
       
       {/* Logo */}
-      <Link to="/" className="font-bold">
-        PERN Auth
+      <Link 
+        to="/" 
+        className="inline-block transition-transform duration-500 ease-in-out hover:-translate-y-1">
+        <img src='/Frotech logo.jpg' alt="Frotech" className="h-16 w-auto"/>
       </Link>
 
       {/* Desktop navigation */}
@@ -79,21 +81,26 @@ const Navbar = ({user, setUser}) => {
           </button>
         ) : (
           <>
-            <Link
-              to="/login"
-              onClick={() => setMenuOpen(false)}
-              className="rounded px-3 py-2 hover:bg-gray-700"
+           <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                openAuthModal("login");
+              }}
+              className="rounded px-3 py-2 text-left hover:bg-gray-700"
             >
               Login
-            </Link>
-
-            <Link
-              to="/register"
-              onClick={() => setMenuOpen(false)}
-              className="rounded px-3 py-2 hover:bg-gray-700"
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                openAuthModal("register");
+              }}
+              className="rounded px-3 py-2 text-left hover:bg-gray-700"
             >
               Register
-            </Link>
+            </button>
           </>
         )}
       </div>
@@ -106,16 +113,20 @@ const Navbar = ({user, setUser}) => {
         onClick={() => setDrawerOpen(false)}
         />
 {/* Account drawer */}
-        <aside className='fixed right-0 top-0 z-50 h-full w-full max-w-md bg-white shadow-2xl'>
+        <aside className='fixed right-0 top-0 z-50 h-full w-full max-w-md rounded-l-4xl border-l border-slate-200 bg-white shadow-2xl'>
 {/* Close button */}
-        <div className='flex justify-end p-5'>
+        <div className='flex justify-end p-6'>
           <button
             type='button'
             onClick={() => setDrawerOpen(false)}
-            className='rounded-full p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800'
+            className='group rounded-xl p-2.5 text-slate-400 transition duration-300 hover:text-slate-700'
             aria-label='Close account menu'
             >
-              <X size={24} />
+              <X 
+                size={20} 
+                strokeWidth={1.8}
+                className='transition-all duration-700 ease-in-out group-hover:rotate-90 group-hover:scale-110'
+              />
             </button>
          </div>
 
@@ -137,33 +148,46 @@ const Navbar = ({user, setUser}) => {
             : "Welcome to PERN Auth"}
         </p>
  {/* Authentication buttons */}
-            <div className='mt-10 w-full space-y-4'>
-              <Link
-                to="/login"
-                onClick={() => setDrawerOpen(false)}
-                            className="block w-full rounded-xl bg-blue-600 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-700">
-                              Login
-                            </Link>
-              <Link
-                to="/register"
-                onClick={() => setDrawerOpen(false)}
-                className="block w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 font-semibold text-gray-800 transition hover:bg-gray-100">
-                  Register
-                </Link>
-            </div>
-             {/* Divider */}
-             <div className="my-8 w-full border-t border-gray-200" />
+<div className='mt-10 w-full space-y-4'>
+  {user ? (
+    <button
+      type='button'
+      onClick={handleLogout}
+      className='block w-full rounded-xl bg-red-500 px-4 py-3.5 font-semibold text-white transition hover:bg-red-600'
+    >
+      Logout
+    </button>
+  ) : (
+    <>
+      <button
+        type='button'
+        onClick={() => {
+          setDrawerOpen(false);
+          openAuthModal("login");
+        }}
+        className='block w-full rounded-xl bg-blue-600 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-700'
+      >
+        Login
+      </button>
 
-{/* Cookie settings */}
-              <button
-                type='button'
-                className='flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-gray-700 transition hover:bg-gray-100'>
-                <span className="text-xl">🍪</span>
+      <button
+        type='button'
+        onClick={() => {
+          setDrawerOpen(false);
+          openAuthModal("register");
+        }}
+        className='block w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 font-semibold text-gray-800 transition hover:bg-gray-100'
+      >
+        Register
+      </button>
+    </>
+  )}
+</div>
 
-                <span className='font-medium'>
-                   Manage Cookies
-                </span>
-                </button>
+{/* Divider */}
+<div className="my-8 w-full border-t border-gray-200" />
+
+
         </div>
        </aside>
       </>

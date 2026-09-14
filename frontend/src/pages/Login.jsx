@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import api from "../api/axios";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import { Mail, Lock,  Eye, EyeOff } from "lucide-react";
+import api from "../api/axios";import { GoogleLogin } from "@react-oauth/google";
+import { Mail, Lock,  Eye, EyeOff, X } from "lucide-react";
 
-const Login = ({ setUser}) => {
+const Login = ({ setUser, onClose, openAuthModal }) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -14,15 +11,12 @@ const Login = ({ setUser}) => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await api.post("/api/auth/login", form);
       setUser(res.data.user);
-      navigate("/");
+      onClose();
     } catch (err) {
        
       setError("Invalid Email or password");
@@ -34,37 +28,44 @@ const Login = ({ setUser}) => {
       const res = await api.post("/api/auth/google", {
         token: credentialResponse.credential,
       });
-    
       setUser(res.data.user);
-      navigate("/");
+      onClose();
     } catch (err) {
       console.error(err);
       setError("Google Sign-In failed");
     }
   };
 
-  return (
-      <div className="min-h-screen flex items-center justify-center bg-[oklch(96.8% 0.007 247.896)] px-4">
-    <form
-  className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-8 sm:p-10"
-  onSubmit={handleSubmit}
->
+return (
+    <div  className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+     onMouseDown={onClose} >
+      <form
+        className="relative w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-8 sm:p-10"
+        onSubmit={handleSubmit}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+      <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"   
+          aria-label="Close login"
+          >
+          <X size={20} />
+      </button>
       <h2 className="text-3xl font-bold text-center tracking-tight text-slate-900">
-  Welcome back
-</h2>
-
-<p className="mt-2 text-center text-sm text-slate-500">
-  Sign in to continue to your account
-</p>
+          Welcome back
+      </h2>
+      <p className="mt-2 text-center text-sm text-slate-500" >
+         Sign in to continue to your account
+      </p>
       {error && (
-          <div className="mt-5 mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+    <div className="mt-5 mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
             <p className="text-sm font-medium text-red-600">
               {error}
             </p>
-          </div>
-              
+    </div>     
       )}
-<div>
+    <div>
         <label
             htmlFor="email"
             className="mb-2 block text-sm font-medium text-slate-700"
@@ -81,13 +82,12 @@ const Login = ({ setUser}) => {
         type="email"
          placeholder="Email address" 
          className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10" 
-         value={form.email} onChange={(e) => setForm({...
-        form, 
+         value={form.email} onChange={(e) => setForm({...form,
         email: e.target.value,
         })} />
 
       </div>
-</div>
+    </div>
          
 <div>
             <label
@@ -110,8 +110,8 @@ const Login = ({ setUser}) => {
               type={showPassword ? "text" : "password"}
               placeholder="Password" 
               className="w-full rounded-xl border border-slate-200 bg-slate-50 py-4 pl-12 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10" 
-              value={form.password} onChange={(e) => setForm({...
-              form, password: e.target.value})} 
+              value={form.password} onChange={(e) => setForm({...form, 
+              password: e.target.value,})} 
         />
         <button
           type="button"
@@ -150,9 +150,12 @@ const Login = ({ setUser}) => {
 </div>
             <p className="text-center mt-5 text-gray-600">
         Don't have an account?{" "}
-            <Link to="/register" className="text-blue-600 font-semibold hover:underline">
-          Register
-            </Link>
+            <button 
+              type="button"
+              onClick={() => openAuthModal("register")}
+              className="text-blue-600 font-semibold hover:underline">
+                Register
+            </button>
             </p>
     </form>
 </div>

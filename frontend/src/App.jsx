@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -10,11 +10,14 @@ import CookieConsent from "./components/CookieConsent";
 
 
 
-function App() {
+function AppContent() {
 
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [authModal, setAuthModal] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,22 +33,57 @@ function App() {
     fetchUser();
   }, []);
 
+    const openAuthModal = (type) => {
+      setAuthModal(type);
+      navigate(`/${type}`);
+    };
+
+    const closeAuthModal = () => {
+      setAuthModal(null);
+      navigate("/");
+    }
+
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-      <Router>
-        <Navbar user={user} setUser={setUser}/>
+        <>
+        <Navbar user={user} setUser={setUser}  openAuthModal={openAuthModal}/>
         <Routes>
-          <Route path="/" element={<Home user={user} error={error}/>} />
-          <Route path="/login" element={<Login setUser={setUser} />}/>
-          <Route path="/register" element={<Register setUser={setUser} />}/>
+          <Route path="/" element={<Home user={user} error={error} openAuthModal={openAuthModal}/>} />
+          <Route path="/login" element={<Home user={user} error={error} openAuthModal={openAuthModal} /> }/>
+          <Route path="/register" element={<Home user={user} error={error} openAuthModal={openAuthModal} />}/>
           <Route path="*" element={<NotFound />} />
         </Routes>
+
+        {authModal === "login" && (
+          <Login 
+            setUser={setUser}
+            onClose={closeAuthModal}
+            openAuthModal={openAuthModal}
+            />
+        )}
+
+        {authModal === "register" && (
+          <Register
+            setUser={setUser}
+            onClose={closeAuthModal}
+            openAuthModal={openAuthModal}
+            />
+        )}
+
         <CookieConsent />
-      </Router>
+      </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

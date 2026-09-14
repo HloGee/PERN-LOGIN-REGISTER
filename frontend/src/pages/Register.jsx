@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import api from "../api/axios";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { Mail, User, Lock, Eye, EyeOff} from "lucide-react";
+import { Mail, User, Lock, Eye, EyeOff, X} from "lucide-react";
 
-const Register = ({ setUser}) => {
+const Register = ({ setUser, onClose, openAuthModal}) => {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -15,9 +13,6 @@ const Register = ({ setUser}) => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
-
-  const navigate = useNavigate();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,18 +29,29 @@ const Register = ({ setUser}) => {
       });
 
     setUser(res.data.user);
-      navigate("/");
+      onClose();
     } catch (err) {
-      setError("Registeration failed");
+      setError("Registration failed");
     }
   };
 
   return (
-         <div className="min-h-screen flex items-center justify-center bg-[oklch(96.8% 0.007 247.896)] px-4">
-    <form className="w-full max-w-md rounded-2xl border border-slate-100 bg-white p-6 shadow-xl sm:p-8 lg:p-10"
-    onSubmit={handleSubmit}>
-      <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900">
-  Create Account
+         <div  className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+         onMouseDown={onClose}>
+    <form 
+      className="relative w-full max-w-md bg-white rounded-4xl shadow-xl border border-slate-100 p-8 sm:p-10"
+      onSubmit={handleSubmit}
+      onMouseDown={(e) => e.stopPropagation()} 
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute right-4 top-4 rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+        aria-label="Close register">  
+          <X size={20} />
+      </button>
+      <h2 className="text-3xl font-bold text-center tracking-tight text-slate-900">
+        Create Account
       </h2>
       <p className="mt-2 text-center text-sm text-slate-500">
         Create your account to get started
@@ -207,9 +213,12 @@ const Register = ({ setUser}) => {
 
               <p className="text-center mt-5 text-gray-600">
         Already have an account?{" "}
-            <Link to="/login" className="text-blue-600 font-semibold hover:underline">
-         Login
-            </Link>
+           <button
+            type="button"
+            onClick={() => openAuthModal("login")}
+            className="text-blue-600 font-semibold hover:underline">
+              Login
+            </button>
               </p>
     </form>
   </div>
