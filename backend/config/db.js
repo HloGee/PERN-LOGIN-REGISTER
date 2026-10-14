@@ -1,25 +1,31 @@
+
 import { Pool } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
 
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not configured");
+}
+
 const pool = new Pool({
-  host:
-    process.env.INSTANCE_CONNECTION_NAME
-      ? `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`
-      : process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  connectionString,
+  ssl: {
+    rejectUnauthorized: true,
+  },
+  max: 5,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 });
 
 pool.on("connect", () => {
-  console.log("Connected to the database");
+  console.log("Connected to PostgreSQL");
 });
 
 pool.on("error", (err) => {
-  console.error("Database error", err);
+  console.error("Unexpected database error:", err.message);
 });
 
 export default pool;
