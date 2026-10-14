@@ -113,7 +113,7 @@ const Navbar = ({user, setUser, openAuthModal}) => {
         onClick={() => setDrawerOpen(false)}
         />
 {/* Account drawer */}
-        <aside className='fixed right-0 top-0 z-50 h-full w-full max-w-md rounded-l-4xl border-l border-slate-200 bg-white shadow-2xl'>
+        <aside className='fixed right-0 top-0 z-50 h-full w-full max-w-md rounded-l-4xl border-l border-gray-700 bg-gray-800 shadow-2xl'>
 {/* Close button */}
         <div className='flex justify-end p-6'>
           <button
@@ -137,7 +137,7 @@ const Navbar = ({user, setUser, openAuthModal}) => {
           <User size={38} strokeWidth={1.8} />
         </div>
 {/* Greeting */}
-        <h2 className='mt-6 text-2xl font-bold text-gray-900'>
+        <h2 className='mt-6 text-2xl font-bold text-white-900'>
             {getGreeting()}
             {user ? `, ${user.name}` : ""}
         </h2>
